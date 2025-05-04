@@ -46,12 +46,11 @@ BOOL DR_ClearFeature(void);
 BOOL DR_SetFeature(void);
 BOOL DR_VendorCmnd(void);
 
-// Declare prototypes for the USB/IE4 isr's. The actual values in the interrupt vectors
+// Declare prototypes for the USB/INT4 isr's. The actual values in the interrupt vectors
 // will be filled in by the FX2 (assuming auto vectoring is enabled).
 // See TRM Section 4.5 (page 67)
-void USB_Jump_Table(void) __interrupt(8);
-void USB_Jump_Table(void) __interrupt(10);
-
+void USB_Jump_Table(void) __interrupt(USB_VECT);
+void USB_Jump_Table(void) __interrupt(INT4_VECT);
 
 // this table is used by the epcs macro
 const char __code EPCS_Offset_Lookup_Table[] =
@@ -365,14 +364,8 @@ void resume_isr(void) __interrupt(WKUP_VECT)
     EZUSB_CLEAR_RSMIRQ();
 }
 
-// I2C interrupt routine
-void i2c_isr(void) __interrupt(9)
-{
-
-}
-
 // declare the IE6 isr so that the compiler fills all the interrupt vectors with values and and does not
 // try to insert code there
-void ie6_isr(void) __interrupt(12)
+void ie6_isr(void) __interrupt(INT6_VECT)
 {
 }
