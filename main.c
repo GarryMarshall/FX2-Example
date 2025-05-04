@@ -7,9 +7,6 @@
 #define _IFREQ 48000            // IFCLK constant for Synchronization Delay
 #define _CFREQ 48000            // CLKOUT constant for Synchronization Delay
 
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#define max(a, b) (((a) > (b)) ? (a) : (b))
-
 #include "fx2.h"
 #include "fx2regs.h"
 
@@ -32,6 +29,7 @@ WORD pStringDscr;
 //-----------------------------------------------------------------------------
 // Prototypes
 //-----------------------------------------------------------------------------
+
 void SetupCommand(void);
 void TD_Init(void);
 void TD_Poll(void);
@@ -47,6 +45,13 @@ BOOL DR_GetStatus(void);
 BOOL DR_ClearFeature(void);
 BOOL DR_SetFeature(void);
 BOOL DR_VendorCmnd(void);
+
+// Declare prototypes for the USB/IE4 isr's. The actual values in the interrupt vectors
+// will be filled in by the FX2 (assuming auto vectoring is enabled).
+// See TRM Section 4.5 (page 67)
+void USB_Jump_Table(void) __interrupt(8);
+void USB_Jump_Table(void) __interrupt(10);
+
 
 // this table is used by the epcs macro
 const char __code EPCS_Offset_Lookup_Table[] =
@@ -73,9 +78,9 @@ const char __code EPCS_Offset_Lookup_Table[] =
 // Task dispatcher
 void main(void)
 {
-    DWORD i;
+    WORD i;
     WORD offset;
-    DWORD DevDescrLen;
+    WORD DevDescrLen;
     WORD IntDescrAddr;
     WORD ExtDescrAddr;
 
@@ -360,3 +365,14 @@ void resume_isr(void) __interrupt(WKUP_VECT)
     EZUSB_CLEAR_RSMIRQ();
 }
 
+// I2C interrupt routine
+void i2c_isr(void) __interrupt(9)
+{
+
+}
+
+// declare the IE6 isr so that the compiler fills all the interrupt vectors with values and and does not
+// try to insert code there
+void ie6_isr(void) __interrupt(12)
+{
+}

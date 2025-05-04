@@ -13,16 +13,6 @@
 .globl _USB_Jump_Table
 
 ;------------------------------------------------------------------------------
-; Interrupt Vectors
-;------------------------------------------------------------------------------
-.area AUTOVECTOR (CODE,ABS)
-.org 0x0043
-      ljmp   _USB_Jump_Table   ; Autovector will replace byte 45
-
-.org 0x0053
-      ljmp   _USB_Jump_Table   ; Autovector will replace byte 55
-
-;------------------------------------------------------------------------------
 ; USB Jump Table
 ;------------------------------------------------------------------------------
 .area USB_JUMP_TABLEUSBJT (CODE,ABS)
