@@ -1,0 +1,11 @@
+Release/*.asm
+Release/*.d
+Release/*.lst
+Release/*.rel
+Release/*.rst
+Release/*.sym
+Release/*.lk
+Release/*.map
+Release/*.mem
+Release/*.hex
+Release/*.bin
